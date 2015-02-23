@@ -4,6 +4,7 @@ import geocoder
 import json
 import re
 import requests
+from pprint import pprint
 
 
 INSPECTION_DOMAIN = 'http://info.kingcounty.gov'
@@ -155,10 +156,19 @@ def get_geojson(result):
     geojson['properties'] = inspection_data
     return geojson
 
+def sort_by_score(dictionary):
+    try:
+
+        #return dictionary.get('Average Score', None)
+        return int(dictionary['features']['properties']['Average Score'])
+
+    except KeyError: 
+        return 0
 
 if __name__ == '__main__':
     total_result = {'type': 'FeatureCollection', 'features': []}
 
+    #########################
     ##Argparse Code <
 
     parser = argparse.ArgumentParser(description='Output King County health inspection data in JSON')
@@ -175,10 +185,25 @@ if __name__ == '__main__':
     else: 
         total_results = 10 
     
-    print 'total results: ', type(total_results)
+    #########################
+    #print 'total results: ', type(total_results)
 
     for result in result_generator(total_results):
         geojson = get_geojson(result)
         total_result['features'].append(geojson)
-    with open('my_map.json', 'w') as fh:
-        json.dump(total_result, fh)
+    
+    print type(total_result)
+    #pprint(sorted(total_result, key=sort_by_score))
+    
+    #total_result = sorted(total_result, key=lambda k: k['features']['properties'].get('Average Score', 0))
+    
+    #j = total_result.json()
+
+    print total_result['features'][0]['properties']['Average Score']
+
+
+    
+    #pprint(json.dumps(total_result))
+
+    #with open('my_map.json', 'w') as fh:
+    #    json.dump(total_result, fh)
