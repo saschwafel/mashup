@@ -167,14 +167,27 @@ def create_results_list():
     return results_list
 
 def sort_by_score(input_list):
-    try:
+    if args.averagescore:
+        try:
 
-        #return dictionary.get('Average Score', None)
-        
-        return input_list['Average Score']
+            return input_list['Average Score']
 
-    except KeyError: 
-        return 0
+        except KeyError: 
+            return 0
+    elif args.highscore:
+        try:
+
+            return input_list['High Score']
+
+        except KeyError: 
+            return 0
+    elif args.mostinspections:
+        try:
+
+            return input_list['Total Inspections']
+
+        except KeyError: 
+            return 0
 
 if __name__ == '__main__':
     total_result = {'type': 'FeatureCollection', 'features': []}
@@ -183,7 +196,10 @@ if __name__ == '__main__':
     ##Argparse Code <
 
     parser = argparse.ArgumentParser(description='Output King County health inspection data in JSON')
-    parser.add_argument('-c', help="Change the total number of outputs from the default of 10", type=int)
+    parser.add_argument('-c', help="Change the total number of outputs from the default of 10", type=int, default=10)
+    parser.add_argument('--averagescore', help="Sort by Average Score", action='store_true')
+    parser.add_argument('--highscore', help="Sort by High Score", action='store_true')
+    parser.add_argument('--mostinspections', help="Sort by total inspections", action='store_true')
     args = parser.parse_args()
     
     user_count = args
@@ -191,13 +207,7 @@ if __name__ == '__main__':
 
     #>
 
-    if user_count:
-        total_results = args.c
-    else: 
-        args.c = 10
-        total_results = args.c
-        #total_results = 10 
-
+    total_results = args.c
 
     #########################
     #print 'total results: ', type(total_results)
