@@ -263,7 +263,14 @@ if __name__ == '__main__':
     #THIS IS THE LINE THAT WORKS
     #pprint(sorted(total_result['features'], key=sort_by_score))
 
-    #pprint(results_list)
+    
+    if args.r: 
+
+        total_result = sorted(total_result['features'], key=sort_by_score, reverse=True)
+    else: 
+
+        total_result = sorted(total_result['features'], key=sort_by_score)
+
 #pprint(sorted(total_result['features'], key=sort_by_score))
 
     #pprint(results_list)
