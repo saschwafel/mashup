@@ -170,15 +170,12 @@ def sort_by_score(input_list):
     if args.averagescore:
         try:
 
-            #return input_list['Average Score']
             return input_list['properties']['Average Score']
 
         except KeyError: 
             return 0
     elif args.highscore:
         try:
-
-            #return input_list['High Score']
 
             return input_list['properties']['High Score']
 
@@ -187,8 +184,6 @@ def sort_by_score(input_list):
 
     elif args.mostinspections:
         try:
-
-            #return input_list['Total Inspections']
 
             return input_list['properties']['Total Inspections']
 
@@ -210,14 +205,12 @@ if __name__ == '__main__':
     args = parser.parse_args()
     
     user_count = args
-    print user_count 
+    #print user_count 
 
     #>
 
     total_results = args.c
 
-    #########################
-    #print 'total results: ', type(total_results)
 
     
     results_list = []
@@ -252,40 +245,13 @@ if __name__ == '__main__':
             elif int(entry['properties']['Average Score']) >= 80:
 
                 entry['properties']['marker-color'] = u'000000'
-            #pprint(entry['properties'])
 
-            #pprint(entry)
-    
-    #print type(total_result)
-
-    #pprint(total_result['features'][0]['properties']['Average Score'])
-    
-    #THIS IS THE LINE THAT WORKS
-    #pprint(sorted(total_result['features'], key=sort_by_score))
-
-    
     if args.r: 
 
         total_result = sorted(total_result['features'], key=sort_by_score, reverse=True)
     else: 
 
         total_result = sorted(total_result['features'], key=sort_by_score)
-
-#pprint(sorted(total_result['features'], key=sort_by_score))
-
-    #pprint(results_list)
-
-    #pprint(sorted(total_result, key=sort_by_score))
-    
-    #total_result = sorted(total_result, key=lambda k: k['features']['properties'].get('Average Score', 0))
-    
-    #j = total_result.json()
-
-    #print total_result['features'][0]['properties']['Average Score']
-
-
-    
-    #pprint(json.dumps(total_result))
 
     with open('my_map.json', 'w') as fh:
         json.dump(total_result, fh)
