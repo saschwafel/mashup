@@ -230,15 +230,38 @@ if __name__ == '__main__':
         geojson = get_geojson(result)
         total_result['features'].append(geojson)
     
-    for entry in total_result['features'][0]
-        print entry
+    #Adding marker color for average scores
+
+    for entry in total_result['features']:
+            if int(entry['properties']['Average Score']) <= 10:
+
+                entry['properties']['marker-color'] = u'#FF0000'
+        
+            elif int(entry['properties']['Average Score']) >= 20:
+
+                entry['properties']['marker-color'] = u'#A80000'
+
+            elif int(entry['properties']['Average Score']) >= 40:
+
+                entry['properties']['marker-color'] = u'680000'
+
+            elif int(entry['properties']['Average Score']) >= 60:
+
+                entry['properties']['marker-color'] = u'400000'
+
+            elif int(entry['properties']['Average Score']) >= 80:
+
+                entry['properties']['marker-color'] = u'000000'
+            #pprint(entry['properties'])
+
+            #pprint(entry)
     
     #print type(total_result)
 
     #pprint(total_result['features'][0]['properties']['Average Score'])
     
     #THIS IS THE LINE THAT WORKS
-    pprint(sorted(total_result['features'], key=sort_by_score))
+    #pprint(sorted(total_result['features'], key=sort_by_score))
 
     #pprint(results_list)
 #pprint(sorted(total_result['features'], key=sort_by_score))
@@ -257,5 +280,5 @@ if __name__ == '__main__':
     
     #pprint(json.dumps(total_result))
 
-    #with open('my_map.json', 'w') as fh:
-    #    json.dump(total_result, fh)
+    with open('my_map.json', 'w') as fh:
+        json.dump(total_result, fh)
