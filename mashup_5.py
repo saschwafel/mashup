@@ -200,6 +200,7 @@ if __name__ == '__main__':
     parser.add_argument('--averagescore', help="Sort by Average Score", action='store_true')
     parser.add_argument('--highscore', help="Sort by High Score", action='store_true')
     parser.add_argument('--mostinspections', help="Sort by total inspections", action='store_true')
+    parser.add_argument('-r', help="Reverse results", action='store_true')
     args = parser.parse_args()
     
     user_count = args
@@ -223,8 +224,10 @@ if __name__ == '__main__':
     #    pprint(results_list[i]['Average Score'])
 
     ############}
-
-    pprint(sorted(results_list, key=sort_by_score))
+    if not args.r: 
+        pprint(sorted(results_list, key=sort_by_score))
+    else:
+        pprint(sorted(results_list, key=sort_by_score, reverse=True))
 
     #for result in result_generator(total_results):
     #    geojson = get_geojson(result)
