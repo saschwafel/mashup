@@ -2,9 +2,11 @@ from bs4 import BeautifulSoup
 import argparse
 import geocoder
 import json
+from json import JSONEncoder
 import re
 import requests
 from pprint import pprint
+from operator import itemgetter
 
 
 INSPECTION_DOMAIN = 'http://info.kingcounty.gov'
@@ -156,11 +158,20 @@ def get_geojson(result):
     geojson['properties'] = inspection_data
     return geojson
 
-def sort_by_score(dictionary):
+def create_results_list(): 
+
+    results_list = []
+    for i in range(args.c):
+        results_list.append(result_generator(1))
+
+    return results_list
+
+def sort_by_score(input_list):
     try:
 
         #return dictionary.get('Average Score', None)
-        return int(dictionary['features']['properties']['Average Score'])
+        
+        return input_list['Average Score']
 
     except KeyError: 
         return 0
@@ -183,23 +194,43 @@ if __name__ == '__main__':
     if user_count:
         total_results = args.c
     else: 
-        total_results = 10 
-    
+        args.c = 10
+        total_results = args.c
+        #total_results = 10 
+
+
     #########################
     #print 'total results: ', type(total_results)
 
-    for result in result_generator(total_results):
-        geojson = get_geojson(result)
-        total_result['features'].append(geojson)
     
-    print type(total_result)
+    results_list = []
+    for result in result_generator(total_results):
+
+        results_list.append(result)
+
+    ##THIS WORKS{
+    #for i in range(args.c):
+    #    pprint(results_list[i]['Average Score'])
+
+    ############}
+
+    pprint(sorted(results_list, key=sort_by_score))
+
+    #for result in result_generator(total_results):
+    #    geojson = get_geojson(result)
+    #    total_result['features'].append(geojson)
+    
+    #print type(total_result)
+
+    
+
     #pprint(sorted(total_result, key=sort_by_score))
     
     #total_result = sorted(total_result, key=lambda k: k['features']['properties'].get('Average Score', 0))
     
     #j = total_result.json()
 
-    print total_result['features'][0]['properties']['Average Score']
+    #print total_result['features'][0]['properties']['Average Score']
 
 
     
