@@ -170,21 +170,27 @@ def sort_by_score(input_list):
     if args.averagescore:
         try:
 
-            return input_list['Average Score']
+            #return input_list['Average Score']
+            return input_list['properties']['Average Score']
 
         except KeyError: 
             return 0
     elif args.highscore:
         try:
 
-            return input_list['High Score']
+            #return input_list['High Score']
+
+            return input_list['properties']['High Score']
 
         except KeyError: 
             return 0
+
     elif args.mostinspections:
         try:
 
-            return input_list['Total Inspections']
+            #return input_list['Total Inspections']
+
+            return input_list['properties']['Total Inspections']
 
         except KeyError: 
             return 0
@@ -219,23 +225,25 @@ if __name__ == '__main__':
 
         results_list.append(result)
 
-    ##THIS WORKS{
-    #for i in range(args.c):
-    #    pprint(results_list[i]['Average Score'])
 
-    ############}
-    if not args.r: 
-        pprint(sorted(results_list, key=sort_by_score))
-    else:
-        pprint(sorted(results_list, key=sort_by_score, reverse=True))
-
-    #for result in result_generator(total_results):
-    #    geojson = get_geojson(result)
-    #    total_result['features'].append(geojson)
+    for result in result_generator(total_results):
+        geojson = get_geojson(result)
+        total_result['features'].append(geojson)
+    
+    for entry in total_result['features'][0]
+        print entry
     
     #print type(total_result)
 
+    #pprint(total_result['features'][0]['properties']['Average Score'])
     
+    #THIS IS THE LINE THAT WORKS
+    pprint(sorted(total_result['features'], key=sort_by_score))
+
+    #pprint(results_list)
+#pprint(sorted(total_result['features'], key=sort_by_score))
+
+    #pprint(results_list)
 
     #pprint(sorted(total_result, key=sort_by_score))
     
